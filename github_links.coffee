@@ -2,7 +2,7 @@
 
 window.Fenix ?= {}
 
-githubLink = /https:\/\/github.com\/(\w+)\/(\w+)(\/(\w+)\/(\S+))?/g
+githubLink = /https:\/\/github.com\/(\w+)\/([^\/]+)(\/(\S+)?)?/g
 
 generateGithubLink = (url, text) ->
   "<a href=\"#{url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> #{text}</a>"
@@ -12,9 +12,13 @@ window.Fenix.GithubLinks =
     text.match(githubLink)
 
   format: (text) ->
-    text = text.replace githubLink, (url, user, repo, repo_rest) ->
-      [slash, action, params...] = repo_rest.split('/')
-      if action == undefined
+    text = text.replace githubLink, (url, user, repo, rest_with_slash, rest) ->
+      if typeof rest == "string"
+        [action, params...] = rest.split('/')
+      else
+        [action, params] = [undefined, []]
+
+      if action == undefined or action == ""
         generateGithubLink(url, "#{user}/#{repo}")
       else if action == 'compare'
         [dummy, base, diff, other] = params[0].match(/^([^.]+)(\.{2,3})([^?\/]+)/)

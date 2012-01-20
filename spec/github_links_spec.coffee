@@ -37,3 +37,7 @@ describe "Fenix.GithubLinks", ->
     it "formats links", ->
       expected = "<a href=\"#{repo_url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a>"
       expect(plugin.format(repo_url)).toEqual(expected)
+
+    it "formats links with extra slash at the end", ->
+      expected = "<a href=\"#{repo_url}/\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a> some words"
+      expect(plugin.format("#{repo_url}/ some words")).toEqual(expected)

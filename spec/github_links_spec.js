@@ -37,10 +37,15 @@
       });
     });
     return describe("repo links", function() {
-      return it("formats links", function() {
+      it("formats links", function() {
         var expected;
         expected = "<a href=\"" + repo_url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a>";
         return expect(plugin.format(repo_url)).toEqual(expected);
+      });
+      return it("formats links with extra slash at the end", function() {
+        var expected;
+        expected = "<a href=\"" + repo_url + "/\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a> some words";
+        return expect(plugin.format("" + repo_url + "/ some words")).toEqual(expected);
       });
     });
   });
