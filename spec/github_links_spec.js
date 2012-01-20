@@ -2,9 +2,9 @@
   describe("Newsline.GithubLinks", function() {
     var compare_url, plugin, pull_url, repo_url;
     plugin = Newsline.GithubLinks;
-    repo_url = 'https://github.com/newsline/fenix';
-    compare_url = 'https://github.com/newsline/fenix/compare/0f717f0...ec9b340';
-    pull_url = 'https://github.com/newsline/fenix/pull/15';
+    repo_url = 'https://github.com/someuser/somerepo';
+    compare_url = 'https://github.com/someuser/somerepo/compare/0f717f0...ec9b340';
+    pull_url = 'https://github.com/someuser/somerepo/pull/15';
     describe("matching", function() {
       it("does not match in generic links to github", function() {
         return expect(plugin.isMatching("https://github.com/blog")).toBeFalsy();
@@ -25,7 +25,7 @@
     describe("compare links", function() {
       it("formats links", function() {
         var expected;
-        expected = ("<a href=\"" + compare_url + "\" class=\"gh-link\">") + "<span class=\"gh-icon\"></span> " + "newsline/fenix <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" + "</a>";
+        expected = ("<a href=\"" + compare_url + "\" class=\"gh-link\">") + "<span class=\"gh-icon\"></span> " + "someuser/somerepo <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" + "</a>";
         return expect(plugin.format(compare_url)).toEqual(expected);
       });
       it("formats links in the middle of messages", function() {
@@ -43,19 +43,19 @@
     describe("repo links", function() {
       it("formats links", function() {
         var expected;
-        expected = "<a href=\"" + repo_url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a>";
+        expected = "<a href=\"" + repo_url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> someuser/somerepo</a>";
         return expect(plugin.format(repo_url)).toEqual(expected);
       });
       return it("formats links with extra slash at the end", function() {
         var expected;
-        expected = "<a href=\"" + repo_url + "/\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a> some words";
+        expected = "<a href=\"" + repo_url + "/\" class=\"gh-link\"><span class=\"gh-icon\"></span> someuser/somerepo</a> some words";
         return expect(plugin.format("" + repo_url + "/ some words")).toEqual(expected);
       });
     });
     return describe("pull links", function() {
       return it("formats links", function() {
         var expected;
-        expected = "<a href=\"" + pull_url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix pull #15</a>";
+        expected = "<a href=\"" + pull_url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> someuser/somerepo pull #15</a>";
         return expect(plugin.format(pull_url)).toEqual(expected);
       });
     });

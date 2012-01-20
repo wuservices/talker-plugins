@@ -1,8 +1,8 @@
 describe "Newsline.GithubLinks", ->
   plugin = Newsline.GithubLinks
-  repo_url = 'https://github.com/newsline/fenix'
-  compare_url = 'https://github.com/newsline/fenix/compare/0f717f0...ec9b340'
-  pull_url = 'https://github.com/newsline/fenix/pull/15'
+  repo_url = 'https://github.com/someuser/somerepo'
+  compare_url = 'https://github.com/someuser/somerepo/compare/0f717f0...ec9b340'
+  pull_url = 'https://github.com/someuser/somerepo/pull/15'
 
   describe "matching", ->
     it "does not match in generic links to github", ->
@@ -24,7 +24,7 @@ describe "Newsline.GithubLinks", ->
     it "formats links", ->
       expected = "<a href=\"#{compare_url}\" class=\"gh-link\">" +
           "<span class=\"gh-icon\"></span> " +
-          "newsline/fenix <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" +
+          "someuser/somerepo <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" +
         "</a>"
       expect(plugin.format(compare_url)).toEqual(expected)
 
@@ -39,14 +39,14 @@ describe "Newsline.GithubLinks", ->
 
   describe "repo links", ->
     it "formats links", ->
-      expected = "<a href=\"#{repo_url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a>"
+      expected = "<a href=\"#{repo_url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> someuser/somerepo</a>"
       expect(plugin.format(repo_url)).toEqual(expected)
 
     it "formats links with extra slash at the end", ->
-      expected = "<a href=\"#{repo_url}/\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a> some words"
+      expected = "<a href=\"#{repo_url}/\" class=\"gh-link\"><span class=\"gh-icon\"></span> someuser/somerepo</a> some words"
       expect(plugin.format("#{repo_url}/ some words")).toEqual(expected)
 
   describe "pull links", ->
     it "formats links", ->
-      expected = "<a href=\"#{pull_url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix pull #15</a>"
+      expected = "<a href=\"#{pull_url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> someuser/somerepo pull #15</a>"
       expect(plugin.format(pull_url)).toEqual(expected)
