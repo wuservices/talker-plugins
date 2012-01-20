@@ -25,6 +25,8 @@
         } else if (action === 'compare') {
           _ref4 = params[0].match(/^([^.]+)(\.{2,3})([^?\/]+)/), dummy = _ref4[0], base = _ref4[1], diff = _ref4[2], other = _ref4[3];
           return generateGithubLink(url, "" + user + "/" + repo + " <span class=\"gh-ref\">" + base + "</span>" + diff + "<span class=\"gh-ref\">" + other + "</span>");
+        } else if (action === 'pull' && (params[0] != null)) {
+          return generateGithubLink(url, "" + user + "/" + repo + " pull #" + params[0]);
         } else {
           return url;
         }

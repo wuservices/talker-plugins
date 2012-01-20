@@ -1,9 +1,10 @@
 (function() {
   describe("Fenix.GithubLinks", function() {
-    var compare_url, plugin, repo_url;
+    var compare_url, plugin, pull_url, repo_url;
     plugin = Fenix.GithubLinks;
     repo_url = 'https://github.com/newsline/fenix';
     compare_url = 'https://github.com/newsline/fenix/compare/0f717f0...ec9b340';
+    pull_url = 'https://github.com/newsline/fenix/pull/15';
     describe("matching", function() {
       it("does not match in generic links to github", function() {
         return expect(plugin.isMatching("https://github.com/blog")).toBeFalsy();
@@ -14,8 +15,11 @@
       it("matches on compare links", function() {
         return expect(plugin.isMatching(compare_url)).toBeTruthy();
       });
-      return it("matches compare links in the middle of messages", function() {
+      it("matches compare links in the middle of messages", function() {
         return expect(plugin.isMatching("foo " + compare_url + " bar")).toBeTruthy();
+      });
+      return it("matches on pull links", function() {
+        return expect(plugin.isMatching("foo " + pull_url + " bar")).toBeTruthy();
       });
     });
     describe("compare links", function() {
@@ -36,7 +40,7 @@
         return expect(result.match(/<a /g).length).toEqual(2);
       });
     });
-    return describe("repo links", function() {
+    describe("repo links", function() {
       it("formats links", function() {
         var expected;
         expected = "<a href=\"" + repo_url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a>";
@@ -46,6 +50,13 @@
         var expected;
         expected = "<a href=\"" + repo_url + "/\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a> some words";
         return expect(plugin.format("" + repo_url + "/ some words")).toEqual(expected);
+      });
+    });
+    return describe("pull links", function() {
+      return it("formats links", function() {
+        var expected;
+        expected = "<a href=\"" + pull_url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix pull #15</a>";
+        return expect(plugin.format(pull_url)).toEqual(expected);
       });
     });
   });

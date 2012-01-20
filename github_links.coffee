@@ -23,6 +23,8 @@ window.Fenix.GithubLinks =
       else if action == 'compare'
         [dummy, base, diff, other] = params[0].match(/^([^.]+)(\.{2,3})([^?\/]+)/)
         generateGithubLink(url, "#{user}/#{repo} <span class=\"gh-ref\">#{base}</span>#{diff}<span class=\"gh-ref\">#{other}</span>")
+      else if action == 'pull' and params[0]?
+        generateGithubLink(url, "#{user}/#{repo} pull ##{params[0]}")
       else
         url
 

@@ -2,6 +2,7 @@ describe "Fenix.GithubLinks", ->
   plugin = Fenix.GithubLinks
   repo_url = 'https://github.com/newsline/fenix'
   compare_url = 'https://github.com/newsline/fenix/compare/0f717f0...ec9b340'
+  pull_url = 'https://github.com/newsline/fenix/pull/15'
 
   describe "matching", ->
     it "does not match in generic links to github", ->
@@ -15,6 +16,9 @@ describe "Fenix.GithubLinks", ->
 
     it "matches compare links in the middle of messages", ->
       expect(plugin.isMatching("foo #{compare_url} bar")).toBeTruthy()
+
+    it "matches on pull links", ->
+      expect(plugin.isMatching("foo #{pull_url} bar")).toBeTruthy()
 
   describe "compare links", ->
     it "formats links", ->
@@ -41,3 +45,8 @@ describe "Fenix.GithubLinks", ->
     it "formats links with extra slash at the end", ->
       expected = "<a href=\"#{repo_url}/\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a> some words"
       expect(plugin.format("#{repo_url}/ some words")).toEqual(expected)
+
+  describe "pull links", ->
+    it "formats links", ->
+      expected = "<a href=\"#{pull_url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix pull #15</a>"
+      expect(plugin.format(pull_url)).toEqual(expected)
