@@ -1,11 +1,15 @@
 (function() {
   describe("Fenix.GithubLinks", function() {
-    var compare_url, plugin;
+    var compare_url, plugin, repo_url;
     plugin = Fenix.GithubLinks;
+    repo_url = 'https://github.com/newsline/fenix';
     compare_url = 'https://github.com/newsline/fenix/compare/0f717f0...ec9b340';
     describe("matching", function() {
       it("does not match in generic links to github", function() {
         return expect(plugin.isMatching("https://github.com/blog")).toBeFalsy();
+      });
+      it("matches on repo urls", function() {
+        return expect(plugin.isMatching(repo_url)).toBeTruthy();
       });
       it("matches on compare links", function() {
         return expect(plugin.isMatching(compare_url)).toBeTruthy();
@@ -14,7 +18,7 @@
         return expect(plugin.isMatching("foo " + compare_url + " bar")).toBeTruthy();
       });
     });
-    return describe("compare links", function() {
+    describe("compare links", function() {
       it("formats links", function() {
         var expected;
         expected = ("<a href=\"" + compare_url + "\" class=\"gh-link\">") + "<span class=\"gh-icon\"></span> " + "newsline/fenix <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" + "</a>";
@@ -30,6 +34,13 @@
         message = "" + compare_url + " " + compare_url;
         result = plugin.format(message);
         return expect(result.match(/<a /g).length).toEqual(2);
+      });
+    });
+    return describe("repo links", function() {
+      return it("formats links", function() {
+        var expected;
+        expected = "<a href=\"" + repo_url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> newsline/fenix</a>";
+        return expect(plugin.format(repo_url)).toEqual(expected);
       });
     });
   });

@@ -1,9 +1,10 @@
 (function() {
   var generateGithubLink, githubLink, _ref;
+  var __slice = Array.prototype.slice;
   if ((_ref = window.Fenix) == null) {
     window.Fenix = {};
   }
-  githubLink = /https:\/\/github.com\/(\w+)\/(\w+)\/(\w+)\/(\S+)/g;
+  githubLink = /https:\/\/github.com\/(\w+)\/(\w+)(\/(\w+)\/(\S+))?/g;
   generateGithubLink = function(url, text) {
     return "<a href=\"" + url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> " + text + "</a>";
   };
@@ -12,11 +13,16 @@
       return text.match(githubLink);
     },
     format: function(text) {
-      return text = text.replace(githubLink, function(url, user, repo, action, rest) {
-        var base, diff, dummy, other, _ref2;
-        if (action === 'compare') {
-          _ref2 = rest.match(/^([^.]+)(\.{2,3})([^?\/]+)/), dummy = _ref2[0], base = _ref2[1], diff = _ref2[2], other = _ref2[3];
-          return generateGithubLink(url, "Compare " + user + "/" + repo + " <span class=\"gh-ref\">" + base + "</span>" + diff + "<span class=\"gh-ref\">" + other + "</span>");
+      return text = text.replace(githubLink, function(url, user, repo, repo_rest) {
+        var action, base, diff, dummy, other, params, slash, _ref2, _ref3;
+        _ref2 = repo_rest.split('/'), slash = _ref2[0], action = _ref2[1], params = 3 <= _ref2.length ? __slice.call(_ref2, 2) : [];
+        if (action === void 0) {
+          return generateGithubLink(url, "" + user + "/" + repo);
+        } else if (action === 'compare') {
+          _ref3 = params[0].match(/^([^.]+)(\.{2,3})([^?\/]+)/), dummy = _ref3[0], base = _ref3[1], diff = _ref3[2], other = _ref3[3];
+          return generateGithubLink(url, "" + user + "/" + repo + " <span class=\"gh-ref\">" + base + "</span>" + diff + "<span class=\"gh-ref\">" + other + "</span>");
+        } else {
+          return url;
         }
       });
     }

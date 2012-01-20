@@ -2,7 +2,7 @@
 
 window.Fenix ?= {}
 
-githubLink = /https:\/\/github.com\/(\w+)\/(\w+)\/(\w+)\/(\S+)/g
+githubLink = /https:\/\/github.com\/(\w+)\/(\w+)(\/(\w+)\/(\S+))?/g
 
 generateGithubLink = (url, text) ->
   "<a href=\"#{url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> #{text}</a>"
@@ -12,10 +12,15 @@ window.Fenix.GithubLinks =
     text.match(githubLink)
 
   format: (text) ->
-    text = text.replace githubLink, (url, user, repo, action, rest) ->
-      if action == 'compare'
-        [dummy, base, diff, other] = rest.match(/^([^.]+)(\.{2,3})([^?\/]+)/)
-        generateGithubLink(url, "Compare #{user}/#{repo} <span class=\"gh-ref\">#{base}</span>#{diff}<span class=\"gh-ref\">#{other}</span>")
+    text = text.replace githubLink, (url, user, repo, repo_rest) ->
+      [slash, action, params...] = repo_rest.split('/')
+      if action == undefined
+        generateGithubLink(url, "#{user}/#{repo}")
+      else if action == 'compare'
+        [dummy, base, diff, other] = params[0].match(/^([^.]+)(\.{2,3})([^?\/]+)/)
+        generateGithubLink(url, "#{user}/#{repo} <span class=\"gh-ref\">#{base}</span>#{diff}<span class=\"gh-ref\">#{other}</span>")
+      else
+        url
 
 plugin.onMessageReceived = (event) ->
   return true unless event.type == "message"
