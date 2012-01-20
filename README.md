@@ -1,5 +1,27 @@
-## Talker plugins
+# Talker plugins
 
 Newsline's [Talker](http://talkerapp.com) plugins.
 
 You have to manually install any plugins you want by copy-pasting the code from this repo.
+
+## Available plugins
+
+You can install one of the plugins by opening it's JavaScript source and copying it to a new plugin after logging in to Talker.
+
+### Markup
+
+Replaces things inside backticks with monospaced font. Just like Markdown.
+
+
+### CI colorizer
+
+Cleans up messages from our CI.
+
+[![Screenshot](https://github.com/newsline/talker-plugins/raw/master/screenshots/ci_colorizer.png)](https://github.com/newsline/talker-plugins/raw/master/screenshots/ci_colorizer.png)
+
+
+### Github Links
+
+Makes links to Github look cooler and less noisy.
+
+[![Screenshot](https://github.com/newsline/talker-plugins/raw/master/screenshots/github_links.png)](https://github.com/newsline/talker-plugins/raw/master/screenshots/github_links.png)
