@@ -29,10 +29,11 @@ window.Fenix.GithubLinks =
 plugin.onMessageReceived = (event) ->
   return true unless event.type == "message"
   if Fenix.GithubLinks.isMatching(event.content)
-    Talker.insertMessage(event, Fenix.GithubLinks.format(event.content))
-    false
-  else
-    true
+    formatted = Fenix.GithubLinks.format(event.content)
+    if formatted != event.content
+      Talker.insertMessage(event, formatted)
+      return false
+  true
 
 if jQuery?
   jQuery ($) ->

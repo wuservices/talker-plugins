@@ -32,15 +32,18 @@
     }
   };
   plugin.onMessageReceived = function(event) {
+    var formatted;
     if (event.type !== "message") {
       return true;
     }
     if (Fenix.GithubLinks.isMatching(event.content)) {
-      Talker.insertMessage(event, Fenix.GithubLinks.format(event.content));
-      return false;
-    } else {
-      return true;
+      formatted = Fenix.GithubLinks.format(event.content);
+      if (formatted !== event.content) {
+        Talker.insertMessage(event, formatted);
+        return false;
+      }
     }
+    return true;
   };
   if (typeof jQuery !== "undefined" && jQuery !== null) {
     jQuery(function($) {
