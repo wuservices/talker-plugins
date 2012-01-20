@@ -1,15 +1,16 @@
 # Simple markup support
 # Based on Markdown
 
+window.Fenix ?= {}
+
+window.Fenix.MarkupPlugin =
+  format: (text) ->
+    if text.indexOf('`') != -1 and text.indexOf('\n') == -1
+      text = text.replace /`(.*?)`/g, (all, code) ->
+        "<tt>#{code}</tt>"
+
 plugin.onMessageReceived = (event) ->
   return true if Talker.isPaste(event)
-
-  if event.content.indexOf('`') != -1 and event.content.indexOf('\n') == -1
-    str = event.content.replace /`(.*?)`/g, (all, code) ->
-      "<tt>#{code}</tt>"
-
-    Talker.insertMessage(event, str)
-    false
-  else
-    true
+  event.content = Fenix.MarkupPlugin.format(event.content)
+  true
 
