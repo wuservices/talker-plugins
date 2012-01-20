@@ -8,9 +8,14 @@ window.Fenix.MarkupPlugin =
     if text.indexOf('`') != -1 and text.indexOf('\n') == -1
       text = text.replace /`(.*?)`/g, (all, code) ->
         "<tt>#{code}</tt>"
+    text
 
 plugin.onMessageReceived = (event) ->
-  return true if Talker.isPaste(event)
-  event.content = Fenix.MarkupPlugin.format(event.content)
-  true
+  return true unless event.type == "message"
+  formatted = Fenix.MarkupPlugin.format(event.content)
+  if event.content != formatted
+    Talker.insertMessage(event, formatted)
+    false
+  else
+    true
 
