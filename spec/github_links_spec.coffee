@@ -1,5 +1,5 @@
-describe "Fenix.GithubLinks", ->
-  plugin = Fenix.GithubLinks
+describe "Newsline.GithubLinks", ->
+  plugin = Newsline.GithubLinks
   repo_url = 'https://github.com/newsline/fenix'
   compare_url = 'https://github.com/newsline/fenix/compare/0f717f0...ec9b340'
   pull_url = 'https://github.com/newsline/fenix/pull/15'

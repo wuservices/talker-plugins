@@ -1,5 +1,5 @@
-describe "Fenix.CiColorizer", ->
-  plugin = Fenix.CiColorizer
+describe "Newsline.CiColorizer", ->
+  plugin = Newsline.CiColorizer
   message = "CI: Some_project build #276 [the-branch] SUCCESS in 2m -- http://"
 
   describe "matching", ->

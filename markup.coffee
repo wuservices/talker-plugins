@@ -1,9 +1,9 @@
 # Simple markup support
 # Based on Markdown
 
-window.Fenix ?= {}
+window.Newsline ?= {}
 
-window.Fenix.MarkupPlugin =
+window.Newsline.MarkupPlugin =
   format: (text) ->
     if text.indexOf('`') != -1 and text.indexOf('\n') == -1
       text = text.replace /`(.*?)`/g, (all, code) ->
@@ -12,7 +12,7 @@ window.Fenix.MarkupPlugin =
 
 plugin.onMessageReceived = (event) ->
   return true unless event.type == "message"
-  formatted = Fenix.MarkupPlugin.format(event.content)
+  formatted = Newsline.MarkupPlugin.format(event.content)
   if event.content != formatted
     Talker.insertMessage(event, formatted)
     false

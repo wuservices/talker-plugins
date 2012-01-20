@@ -1,13 +1,13 @@
 # Tries to make links to Github look cooler
 
-window.Fenix ?= {}
+window.Newsline ?= {}
 
 githubLink = /https:\/\/github.com\/(\w+)\/([^\/]+)(\/(\S+)?)?/g
 
 generateGithubLink = (url, text) ->
   "<a href=\"#{url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> #{text}</a>"
 
-window.Fenix.GithubLinks =
+window.Newsline.GithubLinks =
   isMatching: (text) ->
     text.match(githubLink)
 
@@ -30,8 +30,8 @@ window.Fenix.GithubLinks =
 
 plugin.onMessageReceived = (event) ->
   return true unless event.type == "message"
-  if Fenix.GithubLinks.isMatching(event.content)
-    formatted = Fenix.GithubLinks.format(event.content)
+  if Newsline.GithubLinks.isMatching(event.content)
+    formatted = Newsline.GithubLinks.format(event.content)
     if formatted != event.content
       Talker.insertMessage(event, formatted)
       return false

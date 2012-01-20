@@ -1,10 +1,10 @@
 # Colorizes CI messages according to build status
 
-window.Fenix ?= {}
+window.Newsline ?= {}
 
 ciMessageMatcher = /^(CI: \S+ )(build #\d+)( \[\S+\] )(\S+)( in \w+) -- (.*)$/
 
-window.Fenix.CiColorizer =
+window.Newsline.CiColorizer =
   isMatching: (text) ->
     text.match(ciMessageMatcher)
 
@@ -15,8 +15,8 @@ window.Fenix.CiColorizer =
 
 plugin.onMessageReceived = (event) ->
   return true unless event.type == "message"
-  if Fenix.CiColorizer.isMatching(event.content)
-    Talker.insertMessage(event, Fenix.CiColorizer.format(event.content))
+  if Newsline.CiColorizer.isMatching(event.content)
+    Talker.insertMessage(event, Newsline.CiColorizer.format(event.content))
     false
   else
     true

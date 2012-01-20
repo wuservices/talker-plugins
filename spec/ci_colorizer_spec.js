@@ -1,7 +1,7 @@
 (function() {
-  describe("Fenix.CiColorizer", function() {
+  describe("Newsline.CiColorizer", function() {
     var message, plugin;
-    plugin = Fenix.CiColorizer;
+    plugin = Newsline.CiColorizer;
     message = "CI: Some_project build #276 [the-branch] SUCCESS in 2m -- http://";
     describe("matching", function() {
       it("matches the message '" + message + "'", function() {

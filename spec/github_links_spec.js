@@ -1,7 +1,7 @@
 (function() {
-  describe("Fenix.GithubLinks", function() {
+  describe("Newsline.GithubLinks", function() {
     var compare_url, plugin, pull_url, repo_url;
-    plugin = Fenix.GithubLinks;
+    plugin = Newsline.GithubLinks;
     repo_url = 'https://github.com/newsline/fenix';
     compare_url = 'https://github.com/newsline/fenix/compare/0f717f0...ec9b340';
     pull_url = 'https://github.com/newsline/fenix/pull/15';

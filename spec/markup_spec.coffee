@@ -1,5 +1,5 @@
-describe "Fenix.MarkupPlugin", ->
-  plugin = Fenix.MarkupPlugin
+describe "Newsline.MarkupPlugin", ->
+  plugin = Newsline.MarkupPlugin
   describe "monospace", ->
     it "works when string does not have backticks in it", ->
       expect(plugin.format("hello world")).toEqual "hello world"

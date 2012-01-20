@@ -1,10 +1,10 @@
 (function() {
   var ciMessageMatcher, _ref;
-  if ((_ref = window.Fenix) == null) {
-    window.Fenix = {};
+  if ((_ref = window.Newsline) == null) {
+    window.Newsline = {};
   }
   ciMessageMatcher = /^(CI: \S+ )(build #\d+)( \[\S+\] )(\S+)( in \w+) -- (.*)$/;
-  window.Fenix.CiColorizer = {
+  window.Newsline.CiColorizer = {
     isMatching: function(text) {
       return text.match(ciMessageMatcher);
     },
@@ -19,8 +19,8 @@
     if (event.type !== "message") {
       return true;
     }
-    if (Fenix.CiColorizer.isMatching(event.content)) {
-      Talker.insertMessage(event, Fenix.CiColorizer.format(event.content));
+    if (Newsline.CiColorizer.isMatching(event.content)) {
+      Talker.insertMessage(event, Newsline.CiColorizer.format(event.content));
       return false;
     } else {
       return true;

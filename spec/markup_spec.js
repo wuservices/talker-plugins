@@ -1,7 +1,7 @@
 (function() {
-  describe("Fenix.MarkupPlugin", function() {
+  describe("Newsline.MarkupPlugin", function() {
     var plugin;
-    plugin = Fenix.MarkupPlugin;
+    plugin = Newsline.MarkupPlugin;
     return describe("monospace", function() {
       it("works when string does not have backticks in it", function() {
         return expect(plugin.format("hello world")).toEqual("hello world");

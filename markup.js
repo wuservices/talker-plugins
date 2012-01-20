@@ -1,9 +1,9 @@
 (function() {
   var _ref;
-  if ((_ref = window.Fenix) == null) {
-    window.Fenix = {};
+  if ((_ref = window.Newsline) == null) {
+    window.Newsline = {};
   }
-  window.Fenix.MarkupPlugin = {
+  window.Newsline.MarkupPlugin = {
     format: function(text) {
       if (text.indexOf('`') !== -1 && text.indexOf('\n') === -1) {
         text = text.replace(/`(.*?)`/g, function(all, code) {
@@ -18,7 +18,7 @@
     if (event.type !== "message") {
       return true;
     }
-    formatted = Fenix.MarkupPlugin.format(event.content);
+    formatted = Newsline.MarkupPlugin.format(event.content);
     if (event.content !== formatted) {
       Talker.insertMessage(event, formatted);
       return false;
