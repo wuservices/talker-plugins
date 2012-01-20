@@ -14,8 +14,9 @@ describe "Fenix.GithubLinks", ->
 
   describe "compare links", ->
     it "formats links", ->
-      expected = "<a href=\"#{compare_url}\">" +
-          "Compare newsline/fenix <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" +
+      expected = "<a href=\"#{compare_url}\" class=\"gh-link\">" +
+          "<span class=\"gh-icon\"></span> " +
+          "newsline/fenix <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" +
         "</a>"
       expect(plugin.format(compare_url)).toEqual(expected)
 

@@ -17,7 +17,7 @@
     return describe("compare links", function() {
       it("formats links", function() {
         var expected;
-        expected = ("<a href=\"" + compare_url + "\">") + "Compare newsline/fenix <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" + "</a>";
+        expected = ("<a href=\"" + compare_url + "\" class=\"gh-link\">") + "<span class=\"gh-icon\"></span> " + "newsline/fenix <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" + "</a>";
         return expect(plugin.format(compare_url)).toEqual(expected);
       });
       it("formats links in the middle of messages", function() {
