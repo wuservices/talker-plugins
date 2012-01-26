@@ -3,30 +3,41 @@
 window.Newsline ?= {}
 
 githubLink = /https:\/\/github.com\/(\w+)\/([^\/]+)(\/(\S+)?)?/g
+commitMessageMatcher = /\[([^\]]+)\] (.*) - (.*) – (.*)/
 
 generateGithubLink = (url, text) ->
   "<a href=\"#{url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> #{text}</a>"
+
+formatGenericLinks = (text) ->
+  text = text.replace githubLink, (url, user, repo, rest_with_slash, rest) ->
+    if typeof rest == "string"
+      [action, params...] = rest.split('/')
+    else
+      [action, params] = [undefined, []]
+
+    if action == undefined or action == ""
+      generateGithubLink(url, "#{user}/#{repo}")
+    else if action == 'compare'
+      [dummy, base, diff, other] = params[0].match(/^([^.]+)(\.{2,3})([^?\/]+)/)
+      generateGithubLink(url, "#{user}/#{repo} <span class=\"gh-ref\">#{base}</span>#{diff}<span class=\"gh-ref\">#{other}</span>")
+    else if action == 'pull' and params[0]?
+      generateGithubLink(url, "#{user}/#{repo} pull ##{params[0]}")
+    else
+      url
+
+formatCommitMessage = (text) ->
+  [dummy, repo, message, author, url] = text.match(commitMessageMatcher)
+  "[#{repo}] <a href=\"#{url}\">#{message}</a> - #{author}"
 
 window.Newsline.GithubLinks =
   isMatching: (text) ->
     text.match(githubLink)
 
   format: (text) ->
-    text = text.replace githubLink, (url, user, repo, rest_with_slash, rest) ->
-      if typeof rest == "string"
-        [action, params...] = rest.split('/')
-      else
-        [action, params] = [undefined, []]
-
-      if action == undefined or action == ""
-        generateGithubLink(url, "#{user}/#{repo}")
-      else if action == 'compare'
-        [dummy, base, diff, other] = params[0].match(/^([^.]+)(\.{2,3})([^?\/]+)/)
-        generateGithubLink(url, "#{user}/#{repo} <span class=\"gh-ref\">#{base}</span>#{diff}<span class=\"gh-ref\">#{other}</span>")
-      else if action == 'pull' and params[0]?
-        generateGithubLink(url, "#{user}/#{repo} pull ##{params[0]}")
-      else
-        url
+    if text.match(commitMessageMatcher)
+      formatCommitMessage(text)
+    else
+      formatGenericLinks(text)
 
 plugin.onMessageReceived = (event) ->
   return true unless event.type == "message"

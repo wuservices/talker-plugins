@@ -1,5 +1,6 @@
 describe "Newsline.GithubLinks", ->
   plugin = Newsline.GithubLinks
+  commit_message = '[user/somerepo] Do very - very - cool stuff - Some User – https://github.com/user/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3'
   repo_url = 'https://github.com/someuser/somerepo'
   compare_url = 'https://github.com/someuser/somerepo/compare/0f717f0...ec9b340'
   pull_url = 'https://github.com/someuser/somerepo/pull/15'
@@ -7,6 +8,9 @@ describe "Newsline.GithubLinks", ->
   describe "matching", ->
     it "does not match in generic links to github", ->
       expect(plugin.isMatching("https://github.com/blog")).toBeFalsy()
+
+    it "matches on commit messages", ->
+      expect(plugin.isMatching(commit_message)).toBeTruthy()
 
     it "matches on repo urls", ->
       expect(plugin.isMatching(repo_url)).toBeTruthy()
@@ -19,6 +23,14 @@ describe "Newsline.GithubLinks", ->
 
     it "matches on pull links", ->
       expect(plugin.isMatching("foo #{pull_url} bar")).toBeTruthy()
+
+  describe "commit messages", ->
+    it "formats commit messages", ->
+      expected = '[user/somerepo] ' +
+        '<a href="https://github.com/user/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3">' +
+          'Do very - very - cool stuff' +
+        '</a> - Some User'
+      expect(plugin.format(commit_message)).toEqual(expected)
 
   describe "compare links", ->
     it "formats links", ->

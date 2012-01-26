@@ -1,13 +1,17 @@
 (function() {
   describe("Newsline.GithubLinks", function() {
-    var compare_url, plugin, pull_url, repo_url;
+    var commit_message, compare_url, plugin, pull_url, repo_url;
     plugin = Newsline.GithubLinks;
+    commit_message = '[user/somerepo] Do very - very - cool stuff - Some User – https://github.com/user/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3';
     repo_url = 'https://github.com/someuser/somerepo';
     compare_url = 'https://github.com/someuser/somerepo/compare/0f717f0...ec9b340';
     pull_url = 'https://github.com/someuser/somerepo/pull/15';
     describe("matching", function() {
       it("does not match in generic links to github", function() {
         return expect(plugin.isMatching("https://github.com/blog")).toBeFalsy();
+      });
+      it("matches on commit messages", function() {
+        return expect(plugin.isMatching(commit_message)).toBeTruthy();
       });
       it("matches on repo urls", function() {
         return expect(plugin.isMatching(repo_url)).toBeTruthy();
@@ -20,6 +24,13 @@
       });
       return it("matches on pull links", function() {
         return expect(plugin.isMatching("foo " + pull_url + " bar")).toBeTruthy();
+      });
+    });
+    describe("commit messages", function() {
+      return it("formats commit messages", function() {
+        var expected;
+        expected = '[user/somerepo] ' + '<a href="https://github.com/user/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3">' + 'Do very - very - cool stuff' + '</a> - Some User';
+        return expect(plugin.format(commit_message)).toEqual(expected);
       });
     });
     describe("compare links", function() {
