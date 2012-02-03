@@ -8,6 +8,9 @@ commitMessageMatcher = /\[([^\]]+)\] (.*) - (.*) – (.*)/
 generateGithubLink = (url, text) ->
   "<a href=\"#{url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> #{text}</a>"
 
+githubRef = (ref) ->
+  "<span class=\"gh-ref\">#{ref}</span>"
+
 formatGenericLinks = (text) ->
   text = text.replace githubLink, (url, user, repo, rest_with_slash, rest) ->
     if typeof rest == "string"
@@ -17,9 +20,12 @@ formatGenericLinks = (text) ->
 
     if action == undefined or action == ""
       generateGithubLink(url, "#{user}/#{repo}")
+    else if action == 'commit'
+      shortSha = params[0][0..6]
+      generateGithubLink(url, "#{user}/#{repo} #{githubRef(shortSha)}")
     else if action == 'compare'
       [dummy, base, diff, other] = params[0].match(/^([^.]+)(\.{2,3})([^?\/]+)/)
-      generateGithubLink(url, "#{user}/#{repo} <span class=\"gh-ref\">#{base}</span>#{diff}<span class=\"gh-ref\">#{other}</span>")
+      generateGithubLink(url, "#{user}/#{repo} #{githubRef(base)}#{diff}#{githubRef(other)}")
     else if action == 'pull' and params[0]?
       generateGithubLink(url, "#{user}/#{repo} pull ##{params[0]}")
     else

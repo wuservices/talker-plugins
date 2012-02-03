@@ -1,9 +1,10 @@
 describe "Newsline.GithubLinks", ->
   plugin = Newsline.GithubLinks
-  commitMessage = '[user/somerepo] Do very - very - cool stuff - Some User – https://github.com/user/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3'
   repoUrl = 'https://github.com/someuser/somerepo'
   compareUrl = 'https://github.com/someuser/somerepo/compare/0f717f0...ec9b340'
   pullUrl = 'https://github.com/someuser/somerepo/pull/15'
+  commitUrl = 'https://github.com/someuser/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3'
+  commitMessage = "[someuser/somerepo] Do very - very - cool stuff - Some User – #{commitUrl}"
 
   describe "matching", ->
     it "does not match in generic links to github", ->
@@ -26,8 +27,8 @@ describe "Newsline.GithubLinks", ->
 
   describe "commit messages", ->
     it "formats commit messages", ->
-      expected = '[user/somerepo] ' +
-        '<a href="https://github.com/user/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3">' +
+      expected = '[someuser/somerepo] ' +
+        '<a href="https://github.com/someuser/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3">' +
           'Do very - very - cool stuff' +
         '</a> - Some User'
       expect(plugin.format(commitMessage)).toEqual(expected)
@@ -46,6 +47,23 @@ describe "Newsline.GithubLinks", ->
 
     it "formats multiple links in the same message", ->
       message = "#{compareUrl} #{compareUrl}"
+      result = plugin.format(message)
+      expect(result.match(/<a /g).length).toEqual(2)
+
+  describe "commit links", ->
+    it "formats links", ->
+      expected = "<a href=\"#{commitUrl}\" class=\"gh-link\">" +
+          "<span class=\"gh-icon\"></span> " +
+          "someuser/somerepo <span class=\"gh-ref\">917b57b</span>" +
+        "</a>"
+      expect(plugin.format(commitUrl)).toEqual(expected)
+
+    it "formats links in the middle of messages", ->
+      message = "some words #{commitUrl} some other words"
+      expect(plugin.format(message)).toMatch(/<a href/)
+
+    it "formats multiple links in the same message", ->
+      message = "#{commitUrl} #{commitUrl}"
       result = plugin.format(message)
       expect(result.match(/<a /g).length).toEqual(2)
 

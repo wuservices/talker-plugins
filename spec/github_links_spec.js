@@ -1,11 +1,12 @@
 (function() {
   describe("Newsline.GithubLinks", function() {
-    var commitMessage, compareUrl, plugin, pullUrl, repoUrl;
+    var commitMessage, commitUrl, compareUrl, plugin, pullUrl, repoUrl;
     plugin = Newsline.GithubLinks;
-    commitMessage = '[user/somerepo] Do very - very - cool stuff - Some User – https://github.com/user/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3';
     repoUrl = 'https://github.com/someuser/somerepo';
     compareUrl = 'https://github.com/someuser/somerepo/compare/0f717f0...ec9b340';
     pullUrl = 'https://github.com/someuser/somerepo/pull/15';
+    commitUrl = 'https://github.com/someuser/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3';
+    commitMessage = "[someuser/somerepo] Do very - very - cool stuff - Some User – " + commitUrl;
     describe("matching", function() {
       it("does not match in generic links to github", function() {
         return expect(plugin.isMatching("https://github.com/blog")).toBeFalsy();
@@ -29,7 +30,7 @@
     describe("commit messages", function() {
       return it("formats commit messages", function() {
         var expected;
-        expected = '[user/somerepo] ' + '<a href="https://github.com/user/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3">' + 'Do very - very - cool stuff' + '</a> - Some User';
+        expected = '[someuser/somerepo] ' + '<a href="https://github.com/someuser/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3">' + 'Do very - very - cool stuff' + '</a> - Some User';
         return expect(plugin.format(commitMessage)).toEqual(expected);
       });
     });
@@ -47,6 +48,24 @@
       return it("formats multiple links in the same message", function() {
         var message, result;
         message = "" + compareUrl + " " + compareUrl;
+        result = plugin.format(message);
+        return expect(result.match(/<a /g).length).toEqual(2);
+      });
+    });
+    describe("commit links", function() {
+      it("formats links", function() {
+        var expected;
+        expected = ("<a href=\"" + commitUrl + "\" class=\"gh-link\">") + "<span class=\"gh-icon\"></span> " + "someuser/somerepo <span class=\"gh-ref\">917b57b</span>" + "</a>";
+        return expect(plugin.format(commitUrl)).toEqual(expected);
+      });
+      it("formats links in the middle of messages", function() {
+        var message;
+        message = "some words " + commitUrl + " some other words";
+        return expect(plugin.format(message)).toMatch(/<a href/);
+      });
+      return it("formats multiple links in the same message", function() {
+        var message, result;
+        message = "" + commitUrl + " " + commitUrl;
         result = plugin.format(message);
         return expect(result.match(/<a /g).length).toEqual(2);
       });
