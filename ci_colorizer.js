@@ -29,7 +29,7 @@
   if (typeof jQuery !== "undefined" && jQuery !== null) {
     jQuery(function($) {
       if ($('head style[data-style-for=ci-colorizer]').length === 0) {
-        return $('head').append("<style type=\"text/css\">\n  .ci-success { color: green; }\n  .ci-failure { color: red; }\n  .ci-aborted { color: yellow; }\n</style>");
+        return $('head').append("<style type=\"text/css\">\n  .ci-success { color: green; }\n  .ci-failure { color: red; }\n  .ci-aborted { color: #550; }\n</style>");
       }
     });
   }

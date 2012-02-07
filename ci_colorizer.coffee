@@ -28,6 +28,6 @@ if jQuery?
         <style type="text/css">
           .ci-success { color: green; }
           .ci-failure { color: red; }
-          .ci-aborted { color: yellow; }
+          .ci-aborted { color: #550; }
         </style>
       """)
