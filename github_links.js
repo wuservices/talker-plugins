@@ -1,24 +1,28 @@
 (function() {
-  var commitMessageMatcher, formatCommitMessage, formatGenericLinks, generateGithubLink, githubLink, githubRef, _ref;
-  var __slice = Array.prototype.slice;
-  if ((_ref = window.Newsline) == null) {
-    window.Newsline = {};
-  }
+  var commitMessageMatcher, formatCommitMessage, formatGenericLinks, generateGithubLink, githubLink, githubRef,
+    __slice = Array.prototype.slice;
+
+  if (window.Newsline == null) window.Newsline = {};
+
   githubLink = /https:\/\/github.com\/(\w+)\/([^\/]+)(\/(\S+)?)?/g;
+
   commitMessageMatcher = /\[([^\]]+)\] (.*) - (.*) – (.*)/;
+
   generateGithubLink = function(url, text) {
     return "<a href=\"" + url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> " + text + "</a>";
   };
+
   githubRef = function(ref) {
     return "<span class=\"gh-ref\">" + ref + "</span>";
   };
+
   formatGenericLinks = function(text) {
     return text = text.replace(githubLink, function(url, user, repo, rest_with_slash, rest) {
-      var action, base, diff, dummy, other, params, shortSha, _ref2, _ref3, _ref4;
+      var action, base, diff, dummy, other, params, shortSha, _ref, _ref2, _ref3;
       if (typeof rest === "string") {
-        _ref2 = rest.split('/'), action = _ref2[0], params = 2 <= _ref2.length ? __slice.call(_ref2, 1) : [];
+        _ref = rest.split('/'), action = _ref[0], params = 2 <= _ref.length ? __slice.call(_ref, 1) : [];
       } else {
-        _ref3 = [void 0, []], action = _ref3[0], params = _ref3[1];
+        _ref2 = [void 0, []], action = _ref2[0], params = _ref2[1];
       }
       if (action === void 0 || action === "") {
         return generateGithubLink(url, "" + user + "/" + repo);
@@ -26,7 +30,7 @@
         shortSha = params[0].slice(0, 7);
         return generateGithubLink(url, "" + user + "/" + repo + " " + (githubRef(shortSha)));
       } else if (action === 'compare') {
-        _ref4 = params[0].match(/^([^.]+)(\.{2,3})([^?\/]+)/), dummy = _ref4[0], base = _ref4[1], diff = _ref4[2], other = _ref4[3];
+        _ref3 = params[0].match(/^([a-z0-9._-]+[a-z0-9])(\.{2,3})([^?\/]+)/), dummy = _ref3[0], base = _ref3[1], diff = _ref3[2], other = _ref3[3];
         return generateGithubLink(url, "" + user + "/" + repo + " " + (githubRef(base)) + diff + (githubRef(other)));
       } else if (action === 'pull' && (params[0] != null)) {
         return generateGithubLink(url, "" + user + "/" + repo + " pull #" + params[0]);
@@ -35,11 +39,13 @@
       }
     });
   };
+
   formatCommitMessage = function(text) {
-    var author, dummy, message, repo, url, _ref2;
-    _ref2 = text.match(commitMessageMatcher), dummy = _ref2[0], repo = _ref2[1], message = _ref2[2], author = _ref2[3], url = _ref2[4];
+    var author, dummy, message, repo, url, _ref;
+    _ref = text.match(commitMessageMatcher), dummy = _ref[0], repo = _ref[1], message = _ref[2], author = _ref[3], url = _ref[4];
     return "[" + repo + "] <a href=\"" + url + "\">" + message + "</a> - " + author;
   };
+
   window.Newsline.GithubLinks = {
     isMatching: function(text) {
       return text.match(githubLink);
@@ -52,11 +58,10 @@
       }
     }
   };
+
   plugin.onMessageReceived = function(event) {
     var formatted;
-    if (event.type !== "message") {
-      return true;
-    }
+    if (event.type !== "message") return true;
     if (Newsline.GithubLinks.isMatching(event.content)) {
       formatted = Newsline.GithubLinks.format(event.content);
       if (formatted !== event.content) {
@@ -66,6 +71,7 @@
     }
     return true;
   };
+
   if (typeof jQuery !== "undefined" && jQuery !== null) {
     jQuery(function($) {
       if ($('head style[data-style-for=github-links]').length === 0) {
@@ -73,4 +79,5 @@
       }
     });
   }
+
 }).call(this);

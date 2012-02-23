@@ -1,9 +1,11 @@
 (function() {
+
   describe("Newsline.GithubLinks", function() {
-    var commitMessage, commitUrl, compareUrl, plugin, pullUrl, repoUrl;
+    var commitMessage, commitUrl, compareTagsUrl, compareUrl, plugin, pullUrl, repoUrl;
     plugin = Newsline.GithubLinks;
     repoUrl = 'https://github.com/someuser/somerepo';
     compareUrl = 'https://github.com/someuser/somerepo/compare/0f717f0...ec9b340';
+    compareTagsUrl = 'https://github.com/someuser/somerepo/compare/v1.0.0...v1.0.1';
     pullUrl = 'https://github.com/someuser/somerepo/pull/15';
     commitUrl = 'https://github.com/someuser/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3';
     commitMessage = "[someuser/somerepo] Do very - very - cool stuff - Some User – " + commitUrl;
@@ -35,10 +37,15 @@
       });
     });
     describe("compare links", function() {
-      it("formats links", function() {
+      it("formats links to SHAs", function() {
         var expected;
         expected = ("<a href=\"" + compareUrl + "\" class=\"gh-link\">") + "<span class=\"gh-icon\"></span> " + "someuser/somerepo <span class=\"gh-ref\">0f717f0</span>...<span class=\"gh-ref\">ec9b340</span>" + "</a>";
         return expect(plugin.format(compareUrl)).toEqual(expected);
+      });
+      it("formats links to tags", function() {
+        var expected;
+        expected = ("<a href=\"" + compareTagsUrl + "\" class=\"gh-link\">") + "<span class=\"gh-icon\"></span> " + "someuser/somerepo <span class=\"gh-ref\">v1.0.0</span>...<span class=\"gh-ref\">v1.0.1</span>" + "</a>";
+        return expect(plugin.format(compareTagsUrl)).toEqual(expected);
       });
       it("formats links in the middle of messages", function() {
         var message;
@@ -90,4 +97,5 @@
       });
     });
   });
+
 }).call(this);
