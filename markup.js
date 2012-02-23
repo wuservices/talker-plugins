@@ -1,8 +1,7 @@
 (function() {
-  var _ref;
-  if ((_ref = window.Newsline) == null) {
-    window.Newsline = {};
-  }
+
+  if (window.Newsline == null) window.Newsline = {};
+
   window.Newsline.MarkupPlugin = {
     format: function(text) {
       if (text.indexOf('`') !== -1 && text.indexOf('\n') === -1) {
@@ -13,11 +12,10 @@
       return text;
     }
   };
+
   plugin.onMessageReceived = function(event) {
     var formatted;
-    if (event.type !== "message") {
-      return true;
-    }
+    if (event.type !== "message") return true;
     formatted = Newsline.MarkupPlugin.format(event.content);
     if (event.content !== formatted) {
       Talker.insertMessage(event, formatted);
@@ -26,4 +24,5 @@
       return true;
     }
   };
+
 }).call(this);

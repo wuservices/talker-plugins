@@ -1,9 +1,10 @@
 (function() {
-  var ciMessageMatcher, _ref;
-  if ((_ref = window.Newsline) == null) {
-    window.Newsline = {};
-  }
+  var ciMessageMatcher;
+
+  if (window.Newsline == null) window.Newsline = {};
+
   ciMessageMatcher = /^(CI: \S+ )(build #\d+)( \[\S+\] )(\S+)( in \w+) -- (.*)$/;
+
   window.Newsline.CiColorizer = {
     isMatching: function(text) {
       return text.match(ciMessageMatcher);
@@ -15,10 +16,9 @@
       return "" + intro + "<a href=\"" + url + "\">" + build + "</a>" + branch + "<span class=\"ci-" + (outcome.toLowerCase()) + "\">" + outcome + "</span>" + outro;
     }
   };
+
   plugin.onMessageReceived = function(event) {
-    if (event.type !== "message") {
-      return true;
-    }
+    if (event.type !== "message") return true;
     if (Newsline.CiColorizer.isMatching(event.content)) {
       Talker.insertMessage(event, Newsline.CiColorizer.format(event.content));
       return false;
@@ -26,6 +26,7 @@
       return true;
     }
   };
+
   if (typeof jQuery !== "undefined" && jQuery !== null) {
     jQuery(function($) {
       if ($('head style[data-style-for=ci-colorizer]').length === 0) {
@@ -33,4 +34,5 @@
       }
     });
   }
+
 }).call(this);

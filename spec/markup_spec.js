@@ -1,4 +1,5 @@
 (function() {
+
   describe("Newsline.MarkupPlugin", function() {
     var plugin;
     plugin = Newsline.MarkupPlugin;
@@ -14,4 +15,5 @@
       });
     });
   });
+
 }).call(this);

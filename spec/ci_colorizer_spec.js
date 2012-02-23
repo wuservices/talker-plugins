@@ -1,4 +1,5 @@
 (function() {
+
   describe("Newsline.CiColorizer", function() {
     var message, plugin;
     plugin = Newsline.CiColorizer;
@@ -19,4 +20,5 @@
       });
     });
   });
+
 }).call(this);
