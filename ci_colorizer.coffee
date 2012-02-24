@@ -2,11 +2,11 @@
 
 window.Newsline ?= {}
 
-ciMessageMatcher = /^CI: (\S+ )(build #\d+) \[([^\]]+)\] (\S+)( in \w+) -- (.*)$/
+ciMessageMatcher = /^CI: (\S+ build #\d+) \[([^\]]+)\] (\S+)( in \w+) -- (.*)$/
 
 formatBranches = (branchspec) ->
   branches = branchspec.split(', ')
-  ("<span class=\"ci-branch\">#{branch}</span>" for branch in branches).join(' ')
+  ("<span class=\"ci-branch\">#{branch}</span>" for branch in branches).join(', ')
 
 window.Newsline.CiColorizer =
   isMatching: (text) ->
@@ -14,8 +14,12 @@ window.Newsline.CiColorizer =
 
   format: (text) ->
     matches = text.match(ciMessageMatcher)
-    [original, intro, build, branches, outcome, outro, url] = matches
-    "#{intro}<a href=\"#{url}\">#{build}</a> #{formatBranches(branches)} <span class=\"ci-#{outcome.toLowerCase()}\">#{outcome}</span>#{outro}"
+    [original, build, branches, outcome, outro, url] = matches
+    outcomeClass = outcome.toLowerCase()
+    "<span class=\"ci-#{outcomeClass}\">" +
+      "<a href=\"#{url}\">#{build}</a> " +
+      "(#{formatBranches(branches)})#{outro}" +
+    "</span>"
 
 plugin.onMessageReceived = (event) ->
   return true unless event.type == "message"
@@ -30,8 +34,10 @@ if jQuery?
     if $('head style[data-style-for=ci-colorizer]').length == 0
       $('head').append("""
         <style type="text/css">
-          .ci-success { color: green; }
-          .ci-failure { color: red; }
-          .ci-aborted { color: #550; }
+          .ci-branch { font-family: monospace; }
+
+          .ci-success a { color: green; }
+          .ci-failure a { color: red; }
+          .ci-aborted a { color: #550; }
         </style>
       """)

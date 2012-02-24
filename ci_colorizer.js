@@ -3,7 +3,7 @@
 
   if (window.Newsline == null) window.Newsline = {};
 
-  ciMessageMatcher = /^CI: (\S+ )(build #\d+) \[([^\]]+)\] (\S+)( in \w+) -- (.*)$/;
+  ciMessageMatcher = /^CI: (\S+ build #\d+) \[([^\]]+)\] (\S+)( in \w+) -- (.*)$/;
 
   formatBranches = function(branchspec) {
     var branch, branches;
@@ -16,7 +16,7 @@
         _results.push("<span class=\"ci-branch\">" + branch + "</span>");
       }
       return _results;
-    })()).join(' ');
+    })()).join(', ');
   };
 
   window.Newsline.CiColorizer = {
@@ -24,10 +24,11 @@
       return text.match(ciMessageMatcher);
     },
     format: function(text) {
-      var branches, build, intro, matches, original, outcome, outro, url;
+      var branches, build, matches, original, outcome, outcomeClass, outro, url;
       matches = text.match(ciMessageMatcher);
-      original = matches[0], intro = matches[1], build = matches[2], branches = matches[3], outcome = matches[4], outro = matches[5], url = matches[6];
-      return "" + intro + "<a href=\"" + url + "\">" + build + "</a> " + (formatBranches(branches)) + " <span class=\"ci-" + (outcome.toLowerCase()) + "\">" + outcome + "</span>" + outro;
+      original = matches[0], build = matches[1], branches = matches[2], outcome = matches[3], outro = matches[4], url = matches[5];
+      outcomeClass = outcome.toLowerCase();
+      return ("<span class=\"ci-" + outcomeClass + "\">") + ("<a href=\"" + url + "\">" + build + "</a> ") + ("(" + (formatBranches(branches)) + ")" + outro) + "</span>";
     }
   };
 
@@ -44,7 +45,7 @@
   if (typeof jQuery !== "undefined" && jQuery !== null) {
     jQuery(function($) {
       if ($('head style[data-style-for=ci-colorizer]').length === 0) {
-        return $('head').append("<style type=\"text/css\">\n  .ci-success { color: green; }\n  .ci-failure { color: red; }\n  .ci-aborted { color: #550; }\n</style>");
+        return $('head').append("<style type=\"text/css\">\n  .ci-branch { font-family: monospace; }\n\n  .ci-success a { color: green; }\n  .ci-failure a { color: red; }\n  .ci-aborted a { color: #550; }\n</style>");
       }
     });
   }

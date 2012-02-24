@@ -15,7 +15,7 @@
     return describe("formatting", function() {
       return it("formats the message", function() {
         var expected, result;
-        expected = 'Some_project <a href="http://">build #276</a> ' + '<span class="ci-branch">a-branch</span> <span class="ci-branch">version-1.0</span> ' + '<span class="ci-success">SUCCESS</span> in 2m';
+        expected = '<span class="ci-success">' + '<a href="http://">Some_project build #276</a> ' + '(<span class="ci-branch">a-branch</span>, <span class="ci-branch">version-1.0</span>) in 2m' + '</span>';
         result = plugin.format(message);
         return expect(result).toEqual(expected);
       });
