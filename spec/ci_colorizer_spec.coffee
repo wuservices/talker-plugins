@@ -11,5 +11,9 @@ describe "Newsline.CiColorizer", ->
 
   describe "formatting", ->
     it "formats the message", ->
+      expected =
+        'Some_project <a href="http://">build #276</a> ' +
+        '<span class="ci-branch">a-branch</span> <span class="ci-branch">version-1.0</span> ' +
+        '<span class="ci-success">SUCCESS</span> in 2m'
       result = plugin.format(message)
-      expect(result).toEqual "CI: Some_project <a href=\"http://\">build #276</a> [a-branch, version-1.0] <span class=\"ci-success\">SUCCESS</span> in 2m"
+      expect(result).toEqual expected

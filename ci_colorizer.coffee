@@ -2,7 +2,11 @@
 
 window.Newsline ?= {}
 
-ciMessageMatcher = /^(CI: \S+ )(build #\d+)( \[[^\]]+\] )(\S+)( in \w+) -- (.*)$/
+ciMessageMatcher = /^CI: (\S+ )(build #\d+) \[([^\]]+)\] (\S+)( in \w+) -- (.*)$/
+
+formatBranches = (branchspec) ->
+  branches = branchspec.split(', ')
+  ("<span class=\"ci-branch\">#{branch}</span>" for branch in branches).join(' ')
 
 window.Newsline.CiColorizer =
   isMatching: (text) ->
@@ -10,8 +14,8 @@ window.Newsline.CiColorizer =
 
   format: (text) ->
     matches = text.match(ciMessageMatcher)
-    [original, intro, build, branch, outcome, outro, url] = matches
-    "#{intro}<a href=\"#{url}\">#{build}</a>#{branch}<span class=\"ci-#{outcome.toLowerCase()}\">#{outcome}</span>#{outro}"
+    [original, intro, build, branches, outcome, outro, url] = matches
+    "#{intro}<a href=\"#{url}\">#{build}</a> #{formatBranches(branches)} <span class=\"ci-#{outcome.toLowerCase()}\">#{outcome}</span>#{outro}"
 
 plugin.onMessageReceived = (event) ->
   return true unless event.type == "message"

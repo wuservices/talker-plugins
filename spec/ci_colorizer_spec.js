@@ -14,9 +14,10 @@
     });
     return describe("formatting", function() {
       return it("formats the message", function() {
-        var result;
+        var expected, result;
+        expected = 'Some_project <a href="http://">build #276</a> ' + '<span class="ci-branch">a-branch</span> <span class="ci-branch">version-1.0</span> ' + '<span class="ci-success">SUCCESS</span> in 2m';
         result = plugin.format(message);
-        return expect(result).toEqual("CI: Some_project <a href=\"http://\">build #276</a> [a-branch, version-1.0] <span class=\"ci-success\">SUCCESS</span> in 2m");
+        return expect(result).toEqual(expected);
       });
     });
   });

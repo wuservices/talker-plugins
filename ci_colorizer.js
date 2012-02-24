@@ -1,19 +1,33 @@
 (function() {
-  var ciMessageMatcher;
+  var ciMessageMatcher, formatBranches;
 
   if (window.Newsline == null) window.Newsline = {};
 
-  ciMessageMatcher = /^(CI: \S+ )(build #\d+)( \[[^\]]+\] )(\S+)( in \w+) -- (.*)$/;
+  ciMessageMatcher = /^CI: (\S+ )(build #\d+) \[([^\]]+)\] (\S+)( in \w+) -- (.*)$/;
+
+  formatBranches = function(branchspec) {
+    var branch, branches;
+    branches = branchspec.split(', ');
+    return ((function() {
+      var _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = branches.length; _i < _len; _i++) {
+        branch = branches[_i];
+        _results.push("<span class=\"ci-branch\">" + branch + "</span>");
+      }
+      return _results;
+    })()).join(' ');
+  };
 
   window.Newsline.CiColorizer = {
     isMatching: function(text) {
       return text.match(ciMessageMatcher);
     },
     format: function(text) {
-      var branch, build, intro, matches, original, outcome, outro, url;
+      var branches, build, intro, matches, original, outcome, outro, url;
       matches = text.match(ciMessageMatcher);
-      original = matches[0], intro = matches[1], build = matches[2], branch = matches[3], outcome = matches[4], outro = matches[5], url = matches[6];
-      return "" + intro + "<a href=\"" + url + "\">" + build + "</a>" + branch + "<span class=\"ci-" + (outcome.toLowerCase()) + "\">" + outcome + "</span>" + outro;
+      original = matches[0], intro = matches[1], build = matches[2], branches = matches[3], outcome = matches[4], outro = matches[5], url = matches[6];
+      return "" + intro + "<a href=\"" + url + "\">" + build + "</a> " + (formatBranches(branches)) + " <span class=\"ci-" + (outcome.toLowerCase()) + "\">" + outcome + "</span>" + outro;
     }
   };
 
