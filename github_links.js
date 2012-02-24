@@ -30,7 +30,7 @@
         shortSha = params[0].slice(0, 7);
         return generateGithubLink(url, "" + user + "/" + repo + " " + (githubRef(shortSha)));
       } else if (action === 'compare') {
-        _ref3 = params[0].match(/^([a-z0-9._-]+[a-z0-9])(\.{2,3})([^?\/]+)/), dummy = _ref3[0], base = _ref3[1], diff = _ref3[2], other = _ref3[3];
+        _ref3 = params[0].match(/^([a-z0-9._-]+[a-z0-9^])(\.{2,3})([^?\/]+)/), dummy = _ref3[0], base = _ref3[1], diff = _ref3[2], other = _ref3[3];
         return generateGithubLink(url, "" + user + "/" + repo + " " + (githubRef(base)) + diff + (githubRef(other)));
       } else if (action === 'pull' && (params[0] != null)) {
         return generateGithubLink(url, "" + user + "/" + repo + " pull #" + params[0]);

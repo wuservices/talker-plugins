@@ -24,7 +24,7 @@ formatGenericLinks = (text) ->
       shortSha = params[0][0..6]
       generateGithubLink(url, "#{user}/#{repo} #{githubRef(shortSha)}")
     else if action == 'compare'
-      [dummy, base, diff, other] = params[0].match(/^([a-z0-9._-]+[a-z0-9])(\.{2,3})([^?\/]+)/)
+      [dummy, base, diff, other] = params[0].match(/^([a-z0-9._-]+[a-z0-9^])(\.{2,3})([^?\/]+)/)
       generateGithubLink(url, "#{user}/#{repo} #{githubRef(base)}#{diff}#{githubRef(other)}")
     else if action == 'pull' and params[0]?
       generateGithubLink(url, "#{user}/#{repo} pull ##{params[0]}")
