@@ -1,5 +1,5 @@
 (function() {
-  var commitMessageMatcher, formatCommitMessage, formatGenericLinks, generateGithubLink, githubLink, githubRef,
+  var commitMessageMatcher, formatCommitMessage, formatGenericLinks, generateGithubButton, generateGithubLink, githubIcon, githubLink, githubRef,
     __slice = Array.prototype.slice;
 
   if (window.Newsline == null) window.Newsline = {};
@@ -8,8 +8,16 @@
 
   commitMessageMatcher = /\[([^\]]+)\] (.*) - (.*) – (.*)/;
 
-  generateGithubLink = function(url, text) {
-    return "<a href=\"" + url + "\" class=\"gh-link\"><span class=\"gh-icon\"></span> " + text + "</a>";
+  githubIcon = '<span class="gh-icon"></span>';
+
+  generateGithubLink = function(url) {
+    var base;
+    base = url.replace(/^\w+:\/\//, '');
+    return "<a href=\"" + url + "\" class=\"gh-link\">" + githubIcon + " " + base + "</a>";
+  };
+
+  generateGithubButton = function(url, text) {
+    return "<a href=\"" + url + "\" class=\"gh-button\">" + githubIcon + " " + text + "</a>";
   };
 
   githubRef = function(ref) {
@@ -25,17 +33,17 @@
         _ref2 = [void 0, []], action = _ref2[0], params = _ref2[1];
       }
       if (action === void 0 || action === "") {
-        return generateGithubLink(url, "" + user + "/" + repo);
+        return generateGithubButton(url, "" + user + "/" + repo);
       } else if (action === 'commit') {
         shortSha = params[0].slice(0, 7);
-        return generateGithubLink(url, "" + user + "/" + repo + " " + (githubRef(shortSha)));
+        return generateGithubButton(url, "" + user + "/" + repo + " " + (githubRef(shortSha)));
       } else if (action === 'compare') {
         _ref3 = params[0].match(/^([a-z0-9._-]+[a-z0-9^])(\.{2,3})([^?\/]+)/), dummy = _ref3[0], base = _ref3[1], diff = _ref3[2], other = _ref3[3];
-        return generateGithubLink(url, "" + user + "/" + repo + " " + (githubRef(base)) + diff + (githubRef(other)));
+        return generateGithubButton(url, "" + user + "/" + repo + " " + (githubRef(base)) + diff + (githubRef(other)));
       } else if (action === 'pull' && (params[0] != null)) {
-        return generateGithubLink(url, "" + user + "/" + repo + " pull #" + params[0]);
+        return generateGithubButton(url, "" + user + "/" + repo + " pull #" + params[0]);
       } else {
-        return url;
+        return generateGithubLink(url);
       }
     });
   };
@@ -75,7 +83,7 @@
   if (typeof jQuery !== "undefined" && jQuery !== null) {
     jQuery(function($) {
       if ($('head style[data-style-for=github-links]').length === 0) {
-        return $('head').append("<style type=\"text/css\">\n  .gh-icon {\n    background: url(\"https://github.com/favicon.ico\");\n    display: inline-block;\n    height: 16px;\n    vertical-align: middle;\n    width: 16px;\n  }\n\n  .gh-link {\n    -moz-border-radius: 3px;\n    -webkit-border-radius: 3px;\n    border-radius: 3px;\n    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f9f9f9', EndColorStr='#e1e1e1');\n    /* IE6,IE7 */\n    -ms-filter: \"progid:DXImageTransform.Microsoft.gradient(startColorStr='#f9f9f9', EndColorStr='#e1e1e1')\";\n    /* IE8 */\n    background-image: -moz-linear-gradient(top, #f9f9f9, #e1e1e1);\n    /* FF3.6 */\n    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f9f9f9), color-stop(1, #e1e1e1));\n    /* Saf4+, Chrome */\n    -moz-box-shadow:  0 0 1px rgba(0, 0, 0, 0.2);\n    -webkit-box-shadow:  0 0 1px rgba(0, 0, 0, 0.2);\n    box-shadow:  0 0 1px rgba(0, 0, 0, 0.2);\n    -khtml-user-select: none;\n    -moz-user-select: none;\n    -o-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    border: 1px solid #bbb;\n    color: #000;\n    cursor: pointer;\n    display: inline-block;\n    padding: 3px;\n    text-align: center;\n    padding: 5px;\n    text-decoration: none !important;\n    }\n    .gh-link:hover {\n      -moz-box-shadow:  0 0 5px rgba(7, 94, 131, 0.4);\n      -webkit-box-shadow:  0 0 5px rgba(7, 94, 131, 0.4);\n      box-shadow:  0 0 5px rgba(7, 94, 131, 0.4); }\n    .gh-link[disabled] {\n      background: #eee;\n      border: 1px solid #ccc;\n      box-shadow: none !important;\n      color: #a6a6a6;\n      cursor: default; }\n    .gh-link.pressed, .gh-link:active {\n      filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#d4d4d4', EndColorStr='#ececec');\n      /* IE6,IE7 */\n      -ms-filter: \"progid:DXImageTransform.Microsoft.gradient(startColorStr='#d4d4d4', EndColorStr='#ececec')\";\n      /* IE8 */\n      background-image: -moz-linear-gradient(top, #d4d4d4, #ececec);\n      /* FF3.6 */\n      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #d4d4d4), color-stop(1, #ececec));\n      /* Saf4+, Chrome */\n      -moz-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);\n      -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);\n      box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3); }\n\n  .gh-ref {\n    background: #777;\n    border-radius: 3px;\n    color: white;\n    font-family: monospace;\n    padding: 2px 1px 1px;\n    text-decoration: none;\n    text-shadow: 1px 1px 0 #000;\n  }\n</style>");
+        return $('head').append("<style type=\"text/css\">\n  .gh-icon {\n    background: url(\"https://github.com/favicon.ico\");\n    display: inline-block;\n    height: 16px;\n    vertical-align: middle;\n    width: 16px;\n  }\n\n  .gh-button {\n    -moz-border-radius: 3px;\n    -webkit-border-radius: 3px;\n    border-radius: 3px;\n    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f9f9f9', EndColorStr='#e1e1e1');\n    /* IE6,IE7 */\n    -ms-filter: \"progid:DXImageTransform.Microsoft.gradient(startColorStr='#f9f9f9', EndColorStr='#e1e1e1')\";\n    /* IE8 */\n    background-image: -moz-linear-gradient(top, #f9f9f9, #e1e1e1);\n    /* FF3.6 */\n    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f9f9f9), color-stop(1, #e1e1e1));\n    /* Saf4+, Chrome */\n    -moz-box-shadow:  0 0 1px rgba(0, 0, 0, 0.2);\n    -webkit-box-shadow:  0 0 1px rgba(0, 0, 0, 0.2);\n    box-shadow:  0 0 1px rgba(0, 0, 0, 0.2);\n    -khtml-user-select: none;\n    -moz-user-select: none;\n    -o-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    border: 1px solid #bbb;\n    color: #000;\n    cursor: pointer;\n    display: inline-block;\n    padding: 3px;\n    text-align: center;\n    padding: 5px;\n    text-decoration: none !important;\n    }\n    .gh-button:hover {\n      -moz-box-shadow:  0 0 5px rgba(7, 94, 131, 0.4);\n      -webkit-box-shadow:  0 0 5px rgba(7, 94, 131, 0.4);\n      box-shadow:  0 0 5px rgba(7, 94, 131, 0.4); }\n    .gh-button[disabled] {\n      background: #eee;\n      border: 1px solid #ccc;\n      box-shadow: none !important;\n      color: #a6a6a6;\n      cursor: default; }\n    .gh-button.pressed, .gh-button:active {\n      filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#d4d4d4', EndColorStr='#ececec');\n      /* IE6,IE7 */\n      -ms-filter: \"progid:DXImageTransform.Microsoft.gradient(startColorStr='#d4d4d4', EndColorStr='#ececec')\";\n      /* IE8 */\n      background-image: -moz-linear-gradient(top, #d4d4d4, #ececec);\n      /* FF3.6 */\n      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #d4d4d4), color-stop(1, #ececec));\n      /* Saf4+, Chrome */\n      -moz-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);\n      -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);\n      box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3); }\n\n  .gh-ref {\n    background: #777;\n    border-radius: 3px;\n    color: white;\n    font-family: monospace;\n    padding: 2px 1px 1px;\n    text-decoration: none;\n    text-shadow: 1px 1px 0 #000;\n  }\n</style>");
       }
     });
   }

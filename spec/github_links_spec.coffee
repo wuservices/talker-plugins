@@ -1,11 +1,14 @@
 describe "Newsline.GithubLinks", ->
   plugin = Newsline.GithubLinks
+
   repoUrl = 'https://github.com/someuser/somerepo'
   compareUrl = 'https://github.com/someuser/somerepo/compare/0f717f0^...ec9b340'
   compareTagsUrl = 'https://github.com/someuser/somerepo/compare/v1.0.0...v1.0.1'
   pullUrl = 'https://github.com/someuser/somerepo/pull/15'
   commitUrl = 'https://github.com/someuser/somerepo/commit/917b57b9604037fa40414ba2d4a762ec4d553dd3'
   commitMessage = "[someuser/somerepo] Do very - very - cool stuff - Some User – #{commitUrl}"
+
+  githubIcon = '<span class="gh-icon"></span>'
 
   describe "matching", ->
     it "does not match in generic links to github", ->
@@ -36,15 +39,13 @@ describe "Newsline.GithubLinks", ->
 
   describe "compare links", ->
     it "formats links to SHAs", ->
-      expected = "<a href=\"#{compareUrl}\" class=\"gh-link\">" +
-          "<span class=\"gh-icon\"></span> " +
+      expected = "<a href=\"#{compareUrl}\" class=\"gh-button\">#{githubIcon} " +
           "someuser/somerepo <span class=\"gh-ref\">0f717f0^</span>...<span class=\"gh-ref\">ec9b340</span>" +
         "</a>"
       expect(plugin.format(compareUrl)).toEqual(expected)
 
     it "formats links to tags", ->
-      expected = "<a href=\"#{compareTagsUrl}\" class=\"gh-link\">" +
-          "<span class=\"gh-icon\"></span> " +
+      expected = "<a href=\"#{compareTagsUrl}\" class=\"gh-button\">#{githubIcon} " +
           "someuser/somerepo <span class=\"gh-ref\">v1.0.0</span>...<span class=\"gh-ref\">v1.0.1</span>" +
         "</a>"
       expect(plugin.format(compareTagsUrl)).toEqual(expected)
@@ -60,8 +61,7 @@ describe "Newsline.GithubLinks", ->
 
   describe "commit links", ->
     it "formats links", ->
-      expected = "<a href=\"#{commitUrl}\" class=\"gh-link\">" +
-          "<span class=\"gh-icon\"></span> " +
+      expected = "<a href=\"#{commitUrl}\" class=\"gh-button\">#{githubIcon} " +
           "someuser/somerepo <span class=\"gh-ref\">917b57b</span>" +
         "</a>"
       expect(plugin.format(commitUrl)).toEqual(expected)
@@ -77,14 +77,21 @@ describe "Newsline.GithubLinks", ->
 
   describe "repo links", ->
     it "formats links", ->
-      expected = "<a href=\"#{repoUrl}\" class=\"gh-link\"><span class=\"gh-icon\"></span> someuser/somerepo</a>"
+      expected = "<a href=\"#{repoUrl}\" class=\"gh-button\">#{githubIcon} someuser/somerepo</a>"
       expect(plugin.format(repoUrl)).toEqual(expected)
 
     it "formats links with extra slash at the end", ->
-      expected = "<a href=\"#{repoUrl}/\" class=\"gh-link\"><span class=\"gh-icon\"></span> someuser/somerepo</a> some words"
+      expected = "<a href=\"#{repoUrl}/\" class=\"gh-button\">#{githubIcon} someuser/somerepo</a> some words"
       expect(plugin.format("#{repoUrl}/ some words")).toEqual(expected)
 
   describe "pull links", ->
     it "formats links", ->
-      expected = "<a href=\"#{pullUrl}\" class=\"gh-link\"><span class=\"gh-icon\"></span> someuser/somerepo pull #15</a>"
+      expected = "<a href=\"#{pullUrl}\" class=\"gh-button\">#{githubIcon} someuser/somerepo pull #15</a>"
       expect(plugin.format(pullUrl)).toEqual(expected)
+
+  describe "other links", ->
+    it "formats links", ->
+      url = "https://github.com/some/other/path?with_query"
+      expected = "<a href=\"#{url}\" class=\"gh-link\">#{githubIcon} github.com/some/other/path?with_query</a>"
+      expect(plugin.format(url)).toEqual(expected)
+

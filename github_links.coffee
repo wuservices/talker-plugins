@@ -5,8 +5,14 @@ window.Newsline ?= {}
 githubLink = /https:\/\/github.com\/(\w+)\/([^\/]+)(\/(\S+)?)?/g
 commitMessageMatcher = /\[([^\]]+)\] (.*) - (.*) – (.*)/
 
-generateGithubLink = (url, text) ->
-  "<a href=\"#{url}\" class=\"gh-link\"><span class=\"gh-icon\"></span> #{text}</a>"
+githubIcon = '<span class="gh-icon"></span>'
+
+generateGithubLink = (url) ->
+  base = url.replace(/^\w+:\/\//, '')
+  "<a href=\"#{url}\" class=\"gh-link\">#{githubIcon} #{base}</a>"
+
+generateGithubButton = (url, text) ->
+  "<a href=\"#{url}\" class=\"gh-button\">#{githubIcon} #{text}</a>"
 
 githubRef = (ref) ->
   "<span class=\"gh-ref\">#{ref}</span>"
@@ -19,17 +25,17 @@ formatGenericLinks = (text) ->
       [action, params] = [undefined, []]
 
     if action == undefined or action == ""
-      generateGithubLink(url, "#{user}/#{repo}")
+      generateGithubButton(url, "#{user}/#{repo}")
     else if action == 'commit'
       shortSha = params[0][0..6]
-      generateGithubLink(url, "#{user}/#{repo} #{githubRef(shortSha)}")
+      generateGithubButton(url, "#{user}/#{repo} #{githubRef(shortSha)}")
     else if action == 'compare'
       [dummy, base, diff, other] = params[0].match(/^([a-z0-9._-]+[a-z0-9^])(\.{2,3})([^?\/]+)/)
-      generateGithubLink(url, "#{user}/#{repo} #{githubRef(base)}#{diff}#{githubRef(other)}")
+      generateGithubButton(url, "#{user}/#{repo} #{githubRef(base)}#{diff}#{githubRef(other)}")
     else if action == 'pull' and params[0]?
-      generateGithubLink(url, "#{user}/#{repo} pull ##{params[0]}")
+      generateGithubButton(url, "#{user}/#{repo} pull ##{params[0]}")
     else
-      url
+      generateGithubLink url
 
 formatCommitMessage = (text) ->
   [dummy, repo, message, author, url] = text.match(commitMessageMatcher)
@@ -67,7 +73,7 @@ if jQuery?
             width: 16px;
           }
 
-          .gh-link {
+          .gh-button {
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;
             border-radius: 3px;
@@ -96,17 +102,17 @@ if jQuery?
             padding: 5px;
             text-decoration: none !important;
             }
-            .gh-link:hover {
+            .gh-button:hover {
               -moz-box-shadow:  0 0 5px rgba(7, 94, 131, 0.4);
               -webkit-box-shadow:  0 0 5px rgba(7, 94, 131, 0.4);
               box-shadow:  0 0 5px rgba(7, 94, 131, 0.4); }
-            .gh-link[disabled] {
+            .gh-button[disabled] {
               background: #eee;
               border: 1px solid #ccc;
               box-shadow: none !important;
               color: #a6a6a6;
               cursor: default; }
-            .gh-link.pressed, .gh-link:active {
+            .gh-button.pressed, .gh-button:active {
               filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#d4d4d4', EndColorStr='#ececec');
               /* IE6,IE7 */
               -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#d4d4d4', EndColorStr='#ececec')";
