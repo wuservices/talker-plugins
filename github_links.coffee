@@ -73,6 +73,10 @@ if jQuery?
             width: 16px;
           }
 
+          .gh-link {
+            word-wrap: break-word;
+          }
+
           .gh-button {
             -moz-border-radius: 3px;
             -webkit-border-radius: 3px;
