@@ -2,7 +2,7 @@
 
 window.Newsline ?= {}
 
-ciMessageMatcher = /^(CI: \S+ )(build #\d+)( \[\S+\] )(\S+)( in \w+) -- (.*)$/
+ciMessageMatcher = /^(CI: \S+ )(build #\d+)( \[[^\]]+\] )(\S+)( in \w+) -- (.*)$/
 
 window.Newsline.CiColorizer =
   isMatching: (text) ->
