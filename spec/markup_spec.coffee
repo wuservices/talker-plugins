@@ -9,3 +9,6 @@ describe "Newsline.MarkupPlugin", ->
 
     it "marks words surrounded in backticks as monospace", ->
       expect(plugin.format("hello `cruel` world")).toEqual "hello <tt>cruel</tt> world"
+
+    it "escapes HTML in the backticks", ->
+      expect(plugin.format("`<b>HTML</b>`")).toEqual "<tt>&lt;b&gt;HTML&lt;/b&gt;</tt>"

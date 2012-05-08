@@ -4,10 +4,13 @@
 window.Newsline ?= {}
 
 window.Newsline.MarkupPlugin =
+  escape: (text) ->
+    text.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
   format: (text) ->
     if text.indexOf('`') != -1 and text.indexOf('\n') == -1
-      text = text.replace /`(.*?)`/g, (all, code) ->
-        "<tt>#{code}</tt>"
+      text = text.replace /`(.*?)`/g, (all, code) =>
+        "<tt>#{@escape(code)}</tt>"
     text
 
 plugin.onMessageReceived = (event) ->

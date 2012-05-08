@@ -3,10 +3,14 @@
   if (window.Newsline == null) window.Newsline = {};
 
   window.Newsline.MarkupPlugin = {
+    escape: function(text) {
+      return text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    },
     format: function(text) {
+      var _this = this;
       if (text.indexOf('`') !== -1 && text.indexOf('\n') === -1) {
         text = text.replace(/`(.*?)`/g, function(all, code) {
-          return "<tt>" + code + "</tt>";
+          return "<tt>" + (_this.escape(code)) + "</tt>";
         });
       }
       return text;

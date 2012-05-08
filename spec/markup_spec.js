@@ -10,8 +10,11 @@
       it("does nothing when only a single backtick is in the text", function() {
         return expect(plugin.format("`hello world")).toEqual("`hello world");
       });
-      return it("marks words surrounded in backticks as monospace", function() {
+      it("marks words surrounded in backticks as monospace", function() {
         return expect(plugin.format("hello `cruel` world")).toEqual("hello <tt>cruel</tt> world");
+      });
+      return it("escapes HTML in the backticks", function() {
+        return expect(plugin.format("`<b>HTML</b>`")).toEqual("<tt>&lt;b&gt;HTML&lt;/b&gt;</tt>");
       });
     });
   });
