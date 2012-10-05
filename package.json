@@ -1,0 +1,8 @@
+{
+  "name": "talker-plugins",
+  "version": "1.0.0",
+
+  "dependencies": {
+    "grunt-coffee": ">= 0.0.0"
+  }
+}
