@@ -42,3 +42,14 @@ When developing you can use grunt to watch for changes and automatically compili
 ```
 $ grunt watch
 ```
+
+### Tests
+
+Tests are still run with the Ruby jasmine gem. :-(
+
+```
+$ gem install jasmine
+$ rake jasmine
+```
+
+This should be converted to mocha and then run using grunt some day.

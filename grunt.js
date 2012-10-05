@@ -6,12 +6,17 @@ module.exports = function(grunt) {
       plugins: {
         src: ['src/*.coffee'],
         dest: 'js'
-      }
+      },
+
+      specs: {
+        src: ['spec/*.coffee'],
+        dest: 'spec/js'
+      },
     },
 
     watch: {
-      files: ['<config:coffee.plugins.src>'],
-      tasks: ['coffee:plugins']
+      files: ['<config:coffee.plugins.src>', '<config:coffee.specs.src>'],
+      tasks: ['coffee']
     }
   });
 

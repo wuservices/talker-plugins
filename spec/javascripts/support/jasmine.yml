@@ -1,9 +1,9 @@
 src_files:
     - "spec/support/fake_plugin_interface.js"
-    - "*.js"
+    - "js/*.js"
 
 spec_files:
-    - "*spec.js"
+    - "js/*spec.js"
 
 stylesheets:
 helpers:
