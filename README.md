@@ -26,6 +26,10 @@ Makes links to Github look cooler and less noisy.
 
 [![Screenshot](https://github.com/newsline/talker-plugins/raw/master/screenshots/github_links.png)](https://github.com/newsline/talker-plugins/raw/master/screenshots/github_links.png)
 
+### JIRA Linker
+
+(Beta). Links to JIRA issues for the ```LINK``` product.
+
 ## Development
 
 Install `npm` and `grunt`, then run `npm install` in the project root. You can then use `grunt` to compile the files:
