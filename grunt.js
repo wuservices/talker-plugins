@@ -7,6 +7,11 @@ module.exports = function(grunt) {
         src: ['src/*.coffee'],
         dest: 'js'
       }
+    },
+
+    watch: {
+      files: ['<config:coffee.plugins.src>'],
+      tasks: ['coffee:plugins']
     }
   });
 

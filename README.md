@@ -36,3 +36,9 @@ $ npm install -g grunt
 $ npm install
 $ grunt
 ```
+
+When developing you can use grunt to watch for changes and automatically compiling them:
+
+```
+$ grunt watch
+```
